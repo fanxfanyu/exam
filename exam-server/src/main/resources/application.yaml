@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: exam
+  profiles:
+    active: dev
+  jackson:
+    serialization:
+      write-date-keys-as-timestamps: true
+      write-null-map-values: true
+    constructor-detector: default
+    date-format: java.text.SimpleDateFormat
+    deserialization:
+      accept-empty-array-as-null-object: true
+      accept-empty-string-as-null-object: true
+debug: false
+server:
+  tomcat:
+    threads:
+      max: 600
+      min-spare: 50
+    accesslog:
+      enabled: true
+      directory: logs
+      encoding: utf-8
+    uri-encoding: UTF-8
+    resource:
+      allow-caching: true
+      cache-ttl: 2d
