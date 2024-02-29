@@ -6,4 +6,5 @@ package top.fanxfan.jpa.service;
  * @author fanxfan
  */
 public interface UserService {
+
 }

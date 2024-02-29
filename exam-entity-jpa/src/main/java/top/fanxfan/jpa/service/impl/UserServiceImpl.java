@@ -1,6 +1,8 @@
 package top.fanxfan.jpa.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import top.fanxfan.jpa.repository.UserRepository;
 import top.fanxfan.jpa.service.UserService;
 
 /**
@@ -9,5 +11,9 @@ import top.fanxfan.jpa.service.UserService;
  * @author fanxfan
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+
+    private final UserRepository userRepository;
 }

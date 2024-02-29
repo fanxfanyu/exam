@@ -1,10 +1,9 @@
 package top.fanxfan.jpa.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,21 +15,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 基础信息
+ * 抽象基础实体
  *
  * @author fanxfan
- * @deprecated 官方推荐使用抽象基础类，基本框架搭建完成将移除 {@link AbstractEntity}
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
-@RequiredArgsConstructor
 @SuperBuilder
 @EntityListeners(value = AuditingEntityListener.class)
-@Deprecated(since = "基本框架搭建完成", forRemoval = true)
-@SuppressWarnings("all")
-public class IdEntity implements Serializable {
-
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@ToString
+public abstract class AbstractEntity implements Serializable {
     /**
      * 主键id
      */
@@ -67,4 +65,5 @@ public class IdEntity implements Serializable {
     @Version
     @JsonIgnore
     private Integer version;
+
 }

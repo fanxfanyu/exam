@@ -1,0 +1,39 @@
+debug: false
+server:
+  port: 8081
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: "jdbc:postgresql://127.0.0.1:5432/exam"
+    username: postgres
+    password: fanxfan
+    druid:
+      active-connections: 100
+      connect-timeout: 60000000
+      db-type: postgresql
+      default-auto-commit: true
+      driver-class-name: org.postgres.Driver
+  data:
+    redis:
+      host: 127.0.0.1
+      password: fanxfan
+      database: 0
+      port: 6379
+      jedis:
+        pool:
+          enabled: true
+          max-active: 32
+          min-idle: 0
+          max-wait: -1
+  jpa:
+    open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        hbm2ddl:
+          auto: update
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

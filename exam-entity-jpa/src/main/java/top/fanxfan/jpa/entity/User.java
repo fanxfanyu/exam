@@ -2,13 +2,11 @@ package top.fanxfan.jpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import top.fanxfan.jpa.core.entity.IdEntity;
+import top.fanxfan.jpa.core.entity.AbstractEntity;
 
 /**
  * 用户信息
@@ -17,16 +15,20 @@ import top.fanxfan.jpa.core.entity.IdEntity;
  */
 @Getter
 @Setter
+@ToString(callSuper = true)
 @Entity
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "fanxfan_user")
-public final class User extends IdEntity {
+@Table(name = "fanxfan_user", indexes = {
+        @Index(name = "userNameIndex", columnList = "userName")
+})
+public final class User extends AbstractEntity {
 
     /**
      * 用户名
      */
+    @Column(unique = true, nullable = false)
     private String userName;
 
     /**
