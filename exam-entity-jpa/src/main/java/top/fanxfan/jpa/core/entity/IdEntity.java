@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import top.fanxfan.jpa.core.enums.StatusEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.Date;
  * 基础信息
  *
  * @author fanxfan
+ * @since 基本框架搭建完成
  * @deprecated 官方推荐使用抽象基础类，基本框架搭建完成将移除 {@link AbstractEntity}
  */
 @Getter
@@ -41,8 +43,8 @@ public class IdEntity implements Serializable {
     /**
      * 行状态
      */
-    @Column(columnDefinition = "int default 0")
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status = StatusEnum.SHOW;
 
     /**
      * 创建时间

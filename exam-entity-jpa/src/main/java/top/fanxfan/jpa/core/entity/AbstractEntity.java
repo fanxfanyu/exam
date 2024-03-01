@@ -3,13 +3,19 @@ package top.fanxfan.jpa.core.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import top.fanxfan.jpa.core.enums.StatusEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +34,7 @@ import java.util.Date;
 @EntityListeners(value = AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @ToString
-public abstract class AbstractEntity implements Serializable {
+public abstract class AbstractEntity<T> implements Serializable, Specification<T> {
     /**
      * 主键id
      */
@@ -39,8 +45,10 @@ public abstract class AbstractEntity implements Serializable {
     /**
      * 行状态
      */
-    @Column(columnDefinition = "int default 0")
-    private int status;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(20) default 'SHOW'")
+    @Builder.Default
+    private StatusEnum status = StatusEnum.SHOW;
 
     /**
      * 创建时间
@@ -66,4 +74,8 @@ public abstract class AbstractEntity implements Serializable {
     @JsonIgnore
     private Integer version;
 
+    @Override
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        return null;
+    }
 }

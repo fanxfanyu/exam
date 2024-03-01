@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 登录Controller
+ * 试题Controller
  *
  * @author fanxfan
  */
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/question")
 @RequiredArgsConstructor
 @Slf4j
-public class LoginController {
+public class QuestionController {
 }

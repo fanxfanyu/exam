@@ -23,7 +23,7 @@ import top.fanxfan.jpa.core.entity.AbstractEntity;
 @Table(name = "fanxfan_user", indexes = {
         @Index(name = "userNameIndex", columnList = "userName")
 })
-public final class User extends AbstractEntity {
+public final class User extends AbstractEntity<User> {
 
     /**
      * 用户名
