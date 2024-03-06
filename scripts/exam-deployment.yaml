@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exam-server
+  labels:
+    app: exam-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: exam-server
+  template:
+    metadata:
+      name: exam-server
+      labels:
+        app: exam-server
+    spec:
+      activeDeadlineSeconds: 3000
+      automountServiceAccountToken: false
+      containers:
+        - name: exam-server
+          image: exam-server:1.0.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: "4"
+              memory: 4G
+      restartPolicy: Always
+      

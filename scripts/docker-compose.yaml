@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  redis:
+    image: redis:5.0
+    ports:
+      - "6379:6379"
+    command: [ "redis-server","--requirepass","fanxfan" ]
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: fanxfan
+  web:
+    image: exam-server:1.0.0
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+      - postgres

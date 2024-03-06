@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>exam-config</artifactId>
+    <description>config module</description>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
