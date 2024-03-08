@@ -1,0 +1,24 @@
+# kubernetes service for exam
+apiVersion: v1
+kind: Service
+metadata:
+  name: exam-server-service
+  labels:
+    app: exam-server
+spec:
+  sessionAffinity: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - port: 8081
+      targetPort: 8081
+      protocol: TCP
+      nodePort: 30081
+  selector:
+    app: exam-server
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+      - ip: 127.0.0.1

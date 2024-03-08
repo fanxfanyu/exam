@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exam-server
+  name: exam-server-deployment
   labels:
     app: exam-server
 spec:
@@ -15,15 +15,16 @@ spec:
       labels:
         app: exam-server
     spec:
-      activeDeadlineSeconds: 3000
       automountServiceAccountToken: false
       containers:
         - name: exam-server
-          image: exam-server:1.0.0
-          imagePullPolicy: IfNotPresent
+          image: exam-server
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
           resources:
             limits:
-              cpu: "4"
-              memory: 4G
+              cpu: "2"
+              memory: 2G
       restartPolicy: Always
       

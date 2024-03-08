@@ -1,0 +1,20 @@
+# k8s nginx service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8091
+      targetPort: 80
+      protocol: TCP
+      nodePort: 30125
+  selector:
+    app: nginx
+status:
+  loadBalancer:
+    ingress:
+      - ip: 127.0.0.1

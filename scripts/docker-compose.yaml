@@ -13,7 +13,7 @@ services:
     environment:
       POSTGRES_PASSWORD: fanxfan
   web:
-    image: exam-server:1.0.0
+    image: exam-server
     ports:
       - "8081:8081"
     depends_on:
