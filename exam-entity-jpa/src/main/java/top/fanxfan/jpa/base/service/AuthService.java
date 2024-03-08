@@ -3,11 +3,11 @@ package top.fanxfan.jpa.base.service;
 import top.fanxfan.jpa.base.entity.vo.LoginVo;
 
 /**
- * 用户Service
+ * 身份认证Service
  *
  * @author fanxfan
  */
-public interface UserService {
+public interface AuthService {
 
     /**
      * 登录
@@ -25,4 +25,13 @@ public interface UserService {
      * @return 是否发送成功
      */
     Boolean sendCode(String target, Integer type);
+
+    /**
+     * 校验密码
+     *
+     * @param password        明文密码
+     * @param encryptPassword 密文密码
+     * @return 是否匹配
+     */
+    boolean isPasswordMatch(String password, String encryptPassword);
 }

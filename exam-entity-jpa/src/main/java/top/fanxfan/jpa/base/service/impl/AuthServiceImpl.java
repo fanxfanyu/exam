@@ -2,56 +2,52 @@ package top.fanxfan.jpa.base.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import top.fanxfan.core.exception.ServiceException;
 import top.fanxfan.core.tools.RedisUtils;
+import top.fanxfan.core.tools.SecretUtils;
 import top.fanxfan.jpa.base.entity.User;
 import top.fanxfan.jpa.base.entity.vo.LoginVo;
 import top.fanxfan.jpa.base.enums.LoginTypeEnum;
 import top.fanxfan.jpa.base.repository.UserRepository;
-import top.fanxfan.jpa.base.service.UserService;
+import top.fanxfan.jpa.base.service.AuthService;
+import top.fanxfan.jpa.base.service.CaptchaService;
 
 import java.time.Duration;
 
 import static top.fanxfan.jpa.base.constants.BaseRedisKeyConstants.SEND_CODE;
 
 /**
- * 用户Service实现
+ * 身份认证Service实现
  *
  * @author fanxfan
  */
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
+    private final CaptchaService captchaService;
+
     @Override
-    public Boolean login(LoginVo longinVo) {
-        checkCode(longinVo);
-        LoginTypeEnum byValue = LoginTypeEnum.getByValue(longinVo.getType());
+    public Boolean login(final LoginVo loginVo) {
+        captchaService.verify(loginVo.getCaptchaKey(), loginVo.getCaptcha());
+        LoginTypeEnum byValue = LoginTypeEnum.getByValue(loginVo.getType());
         switch (byValue) {
-            case VERIFICATION_CODE -> verificationCode(longinVo);
-            case EMAIL_LOGIN -> emailLogin(longinVo);
-            case USERNAME_LOGIN -> usernameLogin(longinVo);
-            default -> throw new RuntimeException("无效登录方式");
+            case VERIFICATION_CODE -> verificationCode(loginVo);
+            case EMAIL_LOGIN -> emailLogin(loginVo);
+            case USERNAME_LOGIN -> usernameLogin(loginVo);
+            default -> throw new ServiceException("无效登录方式");
         }
         return true;
-    }
-
-    /**
-     * 校验图形码
-     *
-     * @param loginVo 登录信息
-     */
-    private void checkCode(LoginVo loginVo) {
-        if (!"1234".equals(loginVo.getCode())) {
-            throw new RuntimeException("验证码错误");
-        }
     }
 
     /**
@@ -60,7 +56,11 @@ public class UserServiceImpl implements UserService {
      * @param loginVo 登录信息
      */
     private void emailLogin(LoginVo loginVo) {
-        User user = userRepository.findByEmailAndPassword(loginVo.getAccount(), loginVo.getPassword()).orElseThrow(() -> new RuntimeException("用户不存在"));
+        User user = userRepository.findByEmail(loginVo.getAccount()).orElseThrow(() -> new ServiceException("用户不存在"));
+        if (!isPasswordMatch(loginVo.getPassword(), user.getPassword())) {
+            // 密码错误次数+1
+            throw new ServiceException("密码错误");
+        }
         // 是否重新验证邮箱
         StpUtil.login(user.getId());
     }
@@ -71,11 +71,11 @@ public class UserServiceImpl implements UserService {
      * @param loginVo 登录信息
      */
     private void usernameLogin(LoginVo loginVo) {
-        String code = getCode(loginVo.getAccount());
-        if (!code.equals(loginVo.getPassword())) {
-            throw new RuntimeException("验证码错误");
+        User user = userRepository.findByUserName(loginVo.getAccount()).orElseThrow(() -> new ServiceException("用户不存在"));
+        if (!isPasswordMatch(loginVo.getPassword(), user.getPassword())) {
+            // 密码错误次数+1
+            throw new ServiceException("密码错误");
         }
-        User user = userRepository.findByUserNameAndPassword(loginVo.getAccount(), loginVo.getPassword()).orElseThrow(() -> new RuntimeException("用户不存在"));
         StpUtil.login(user.getId());
     }
 
@@ -85,10 +85,10 @@ public class UserServiceImpl implements UserService {
      * @param loginVo 登录信息
      */
     private void verificationCode(LoginVo loginVo) {
-        // 获取手机验证码,数据库获取、redis获取
+        // 获取手机验证码,数据库获取\redis获取
         String code = getCode(loginVo.getAccount());
         if (!code.equals(loginVo.getPassword())) {
-            throw new RuntimeException("验证码错误");
+            throw new ServiceException("验证码错误");
         }
     }
 
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
         String key = formatKey(target);
         String code = Convert.toStr(RedisUtils.getCacheObject(key), "");
         if (ObjectUtil.isEmpty(code)) {
-            throw new RuntimeException("验证码已过期");
+            throw new ServiceException("验证码已过期");
         }
         return code;
     }
@@ -129,5 +129,10 @@ public class UserServiceImpl implements UserService {
      */
     private String formatKey(String target) {
         return String.format(SEND_CODE, target);
+    }
+
+    @Override
+    public boolean isPasswordMatch(@NonNull String password, @NonNull String encryptPassword) {
+        return CharSequenceUtil.equals(SecretUtils.encrypt(password), encryptPassword);
     }
 }

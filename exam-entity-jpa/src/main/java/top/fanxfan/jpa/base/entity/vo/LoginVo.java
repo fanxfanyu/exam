@@ -39,7 +39,14 @@ public class LoginVo {
     /**
      * 验证码
      */
-    @NotBlank(message = "验证码不允许为空")
-    @Schema(name = "code", description = "验证码")
-    private String code;
+    @NotBlank(message = "图片验证码不允许为空")
+    @Schema(name = "captcha", description = "图片验证码")
+    private String captcha;
+
+    /**
+     * 验证码key
+     */
+    @NotBlank(message = "验证码key不允许为空")
+    @Schema(name = "captchaKey", description = "验证码key")
+    private String captchaKey;
 }

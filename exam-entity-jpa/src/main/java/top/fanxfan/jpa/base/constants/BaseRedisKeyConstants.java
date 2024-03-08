@@ -13,4 +13,9 @@ public interface BaseRedisKeyConstants {
      * KEY格式：send_code:{mobile}
      */
     String SEND_CODE = "send_code:%s";
+
+    /**
+     * 验证码KEY
+     */
+    String CAPTCHA_KEY = "captcha_key:%s";
 }

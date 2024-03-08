@@ -4,12 +4,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.fanxfan.jpa.base.entity.vo.LoginVo;
-import top.fanxfan.jpa.base.service.UserService;
+import top.fanxfan.jpa.base.service.AuthService;
+import top.fanxfan.jpa.base.service.CaptchaService;
+
+import java.util.Map;
 
 /**
  * 登录Controller
@@ -23,7 +23,19 @@ import top.fanxfan.jpa.base.service.UserService;
 @Tag(name = "登录Controller", description = "登录注册相关控制")
 public class LoginController {
 
-    private final UserService userService;
+    private final AuthService authService;
+
+    private final CaptchaService captchaService;
+
+    /**
+     * 获取验证码
+     *
+     * @return 响应结果
+     */
+    @GetMapping("/code")
+    public ResponseEntity<Map<String, String>> code() {
+        return ResponseEntity.ok(captchaService.create());
+    }
 
     /**
      * 登录
@@ -33,6 +45,6 @@ public class LoginController {
      */
     @PostMapping
     public ResponseEntity<Boolean> login(@RequestBody LoginVo longinVo) {
-        return ResponseEntity.ok(userService.login(longinVo));
+        return ResponseEntity.ok(authService.login(longinVo));
     }
 }

@@ -122,11 +122,6 @@
                 <artifactId>sa-token-alone-redis</artifactId>
                 <version>${sa-token.version}</version>
             </dependency>
-            <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>6.0.0</version>
-            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -181,10 +176,6 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
     </dependencies>
 </project>

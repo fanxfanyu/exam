@@ -45,18 +45,3 @@ knife4j:
   enable: true
   setting:
     language: zh_cn
-# Sa-Token 配置
-sa-token:
-  token-name: fanxfan
-  timeout: 2592000
-  active-timeout: -1
-  is-concurrent: true
-  is-share: true
-  token-style: uuid
-  is-log: false
-  alone-redis:
-    database: 2
-    host: 127.0.0.1
-    port: 6379
-    password: fanxfan
-    timeout: 10s
