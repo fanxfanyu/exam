@@ -29,7 +29,7 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         show_sql: true
         hbm2ddl:
           auto: update
@@ -58,10 +58,12 @@ top:
       private-key: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANyotY9yF3OWM9iSeAzJkkGd3q1zeYM+UPgVO++3ujMwUXKIV0mEzZMfZpb5By9mpeGHf+kSrX76KLtIWdm4Eo1+dUqiGcqJNwlIJPgbB/nRpC/Qyc0CpN12JUwRRVOUW0ESM5enl2SSMvDI9XuMK9/xXgGwpbhbd881WxoxqyZ7AgMBAAECgYAB65dGO/hHnDtam3kJ+3MXY8KoAG+X8cyN7CQNDldDfMcorQESywy9nAdY3FVGAf8C5cVPh5xqP3kSmtWVVyG/hK2Eqjq/XbfqtQ826Eqr+Poxk3KJaetIikynEa+WL24085G1UtMbmCTpsVgLRNJKVPGM1ez3qmPeqglQCfCBgQJBAO8f33NGbquVc0i5I7CPEca3OumD2mTcUeISM3ab5iZr08MebUCNwpmznJN1in3oAs9+u2pmDKk/EZHmmfh6djsCQQDsOzseVPY209EbvAqANNw7B1c3HqjywQH3L6hjAg911rfFSSHI2F6HTnnylo73H0mmya2/YTgtt5ggP6a2U8zBAkEA0rCyoU8dk/FKcnkuCRMGBqDLN5UFiHjXbOm8jnUuhAvdub3FZWuCWwr2mramH+mdEFYJq+XeogD/6h3U7Cp6oQJBALNIeKOag4o003yjB60pcQLznUNd54bk6GL7LmaFx8n8/VejGxrc61DxRCfSEAqJGlKUuWKHnCVGMxQ2eoXhr4ECQA5pmvvJmcj1P/ebk4jWAT49uFSy7+TU4adVxIsU4Gi/rlCselxUtElJSjF5H7geJNR/i69VHTNTGlrCgM/hcb8=
       public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcqLWPchdzljPYkngMyZJBnd6tc3mDPlD4FTvvt7ozMFFyiFdJhM2TH2aW+QcvZqXhh3/pEq1++ii7SFnZuBKNfnVKohnKiTcJSCT4Gwf50aQv0MnNAqTddiVMEUVTlFtBEjOXp5dkkjLwyPV7jCvf8V4BsKW4W3fPNVsaMasmewIDAQAB
     captcha:
+      enable: false
       type: line
       width: 200
       height: 50
       length: 8
+      count: 20
 logging:
   level:
     top.fanxfan: debug

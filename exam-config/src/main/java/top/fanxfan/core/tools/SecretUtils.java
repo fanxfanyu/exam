@@ -32,7 +32,7 @@ public class SecretUtils {
      */
     public static String encrypt(final String value) {
         if (ObjectUtil.isEmpty(value)) {
-            return null;
+            return "";
         }
         return getEncryptor().encryptBase64(value, KeyType.PrivateKey);
     }

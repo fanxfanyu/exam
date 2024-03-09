@@ -20,18 +20,19 @@ public interface AuthService {
     /**
      * 发送验证码
      *
-     * @param target 目标
-     * @param type   发送类型 0 短信验证码 1 邮件验证码
+     * @param account 账号
+     * @param type    发送类型 0 短信验证码 1 邮件验证码
      * @return 是否发送成功
      */
-    Boolean sendCode(String target, Integer type);
+    Boolean sendCode(String account, Integer type);
 
     /**
      * 校验密码
      *
+     * @param userId          用户ID
      * @param password        明文密码
      * @param encryptPassword 密文密码
      * @return 是否匹配
      */
-    boolean isPasswordMatch(String password, String encryptPassword);
+    boolean isPasswordMatch(Long userId, String password, String encryptPassword);
 }

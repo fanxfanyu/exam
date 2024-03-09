@@ -18,4 +18,9 @@ public interface BaseRedisKeyConstants {
      * 验证码KEY
      */
     String CAPTCHA_KEY = "captcha_key:%s";
+
+    /**
+     * 密码尝试次数KEY
+     */
+    String PASSWORD_ATTEMPT_COUNT = "password_attempt_count:%s";
 }

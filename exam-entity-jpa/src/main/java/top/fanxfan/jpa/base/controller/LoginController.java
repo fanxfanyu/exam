@@ -17,7 +17,7 @@ import java.util.Map;
  * @author fanxfan
  */
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "登录Controller", description = "登录注册相关控制")
@@ -33,7 +33,7 @@ public class LoginController {
      * @return 响应结果
      */
     @GetMapping("/code")
-    public ResponseEntity<Map<String, String>> code() {
+    public ResponseEntity<Map<String, Object>> code() {
         return ResponseEntity.ok(captchaService.create());
     }
 

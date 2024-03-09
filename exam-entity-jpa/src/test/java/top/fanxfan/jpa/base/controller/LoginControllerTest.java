@@ -1,8 +1,8 @@
 package top.fanxfan.jpa.base.controller;
 
 import jakarta.annotation.Resource;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import top.fanxfan.core.tools.SecretUtils;
@@ -54,19 +54,11 @@ class LoginControllerTest extends SpringBootBaseTest {
     }
 
     /**
-     * 删除测试数据
-     */
-    @AfterEach
-    void destroy() {
-        userRepository.deleteAll();
-    }
-
-    /**
      * 图形验证码测试
      */
     @Test
     void testCode() {
-        Map<String, String> codeResult = captchaService.create();
+        Map<String, Object> codeResult = captchaService.create();
         log.error("codeResult {}", codeResult);
     }
 
@@ -83,5 +75,26 @@ class LoginControllerTest extends SpringBootBaseTest {
         loginVo.setCaptchaKey("80a5c15f-accf-4087-999b-1ecd4dd131fa");
         Boolean login = authService.login(loginVo);
         log.error("login result {}", login);
+    }
+
+    /**
+     * 测试密码错误
+     */
+    @Test
+    @SneakyThrows
+    void testPasswordAttempt() {
+        LoginVo loginVo = new LoginVo();
+        loginVo.setAccount("fanxfan");
+        loginVo.setPassword("000000");
+        loginVo.setType(LoginTypeEnum.USERNAME_LOGIN.getValue());
+        for (int i = 0; i < 10; i++) {
+            try {
+                log.error("login count {}", i);
+                Boolean login = authService.login(loginVo);
+                log.error("login result {}", login);
+            } catch (Exception e) {
+                log.error("login error {}", e.getMessage());
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ public interface CaptchaService {
      *
      * @return 验证码信息
      */
-    Map<String, String> create();
+    Map<String, Object> create();
 
     /**
      * 校验验证码
