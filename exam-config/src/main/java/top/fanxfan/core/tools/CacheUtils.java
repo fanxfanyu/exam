@@ -27,6 +27,7 @@ public class CacheUtils {
      */
     public static Set<Object> keys(String cacheNames) {
         Cache cache = CACHE_MANAGER.getCache(cacheNames);
+        assert cache != null;
         RMap<Object, Object> rmap = (RMap<Object, Object>) cache.getNativeCache();
         return rmap.keySet();
     }
@@ -38,7 +39,9 @@ public class CacheUtils {
      * @param key        缓存key
      */
     public static <T> T get(String cacheNames, Object key) {
-        Cache.ValueWrapper wrapper = CACHE_MANAGER.getCache(cacheNames).get(key);
+        Cache cache = CACHE_MANAGER.getCache(cacheNames);
+        assert cache != null;
+        Cache.ValueWrapper wrapper = cache.get(key);
         return wrapper != null ? (T) wrapper.get() : null;
     }
 
@@ -50,7 +53,9 @@ public class CacheUtils {
      * @param value      缓存值
      */
     public static void put(String cacheNames, Object key, Object value) {
-        CACHE_MANAGER.getCache(cacheNames).put(key, value);
+        Cache cache = CACHE_MANAGER.getCache(cacheNames);
+        assert cache != null;
+        cache.put(key, value);
     }
 
     /**
@@ -60,7 +65,9 @@ public class CacheUtils {
      * @param key        缓存key
      */
     public static void evict(String cacheNames, Object key) {
-        CACHE_MANAGER.getCache(cacheNames).evict(key);
+        Cache cache = CACHE_MANAGER.getCache(cacheNames);
+        assert cache != null;
+        cache.evict(key);
     }
 
     /**
@@ -69,7 +76,9 @@ public class CacheUtils {
      * @param cacheNames 缓存组名称
      */
     public static void clear(String cacheNames) {
-        CACHE_MANAGER.getCache(cacheNames).clear();
+        Cache cache = CACHE_MANAGER.getCache(cacheNames);
+        assert cache != null;
+        cache.clear();
     }
 
 }

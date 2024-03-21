@@ -3,8 +3,10 @@ package top.fanxfan.jpa.base.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RateType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import top.fanxfan.core.limit.apo.RedisRateLimitConfig;
 import top.fanxfan.jpa.base.entity.vo.LoginVo;
 import top.fanxfan.jpa.base.service.AuthService;
 import top.fanxfan.jpa.base.service.CaptchaService;
@@ -33,6 +35,7 @@ public class LoginController {
      * @return 响应结果
      */
     @GetMapping("/code")
+    @RedisRateLimitConfig(key = "login:code:key", rateType = RateType.PER_CLIENT, replenishRate = 1, burstCapacity = 5)
     public ResponseEntity<Map<String, Object>> code() {
         return ResponseEntity.ok(captchaService.create());
     }
@@ -44,6 +47,7 @@ public class LoginController {
      * @return 响应结果
      */
     @PostMapping
+    @RedisRateLimitConfig
     public ResponseEntity<Boolean> login(@RequestBody LoginVo longinVo) {
         return ResponseEntity.ok(authService.login(longinVo));
     }
