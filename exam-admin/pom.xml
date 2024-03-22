@@ -9,8 +9,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>exam-server</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>exam-admin</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -21,8 +20,29 @@
     <dependencies>
         <dependency>
             <groupId>top.fanxfan</groupId>
-            <artifactId>exam-service</artifactId>
+            <artifactId>exam-server</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>top.fanxfan.ExamApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

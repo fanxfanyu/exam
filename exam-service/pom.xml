@@ -9,7 +9,8 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>exam-server</artifactId>
+    <artifactId>exam-service</artifactId>
+    <description>exam service</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -21,7 +22,8 @@
     <dependencies>
         <dependency>
             <groupId>top.fanxfan</groupId>
-            <artifactId>exam-service</artifactId>
+            <artifactId>exam-entity-jpa</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

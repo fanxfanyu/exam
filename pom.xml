@@ -18,6 +18,8 @@
         <module>exam-server</module>
         <module>exam-entity-jpa</module>
         <module>exam-config</module>
+        <module>exam-service</module>
+        <module>exam-admin</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -43,6 +45,16 @@
             <dependency>
                 <groupId>top.fanxfan</groupId>
                 <artifactId>exam-config</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>top.fanxfan</groupId>
+                <artifactId>exam-service</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>top.fanxfan</groupId>
+                <artifactId>exam-server</artifactId>
                 <version>1.0.0</version>
             </dependency>
             <dependency>
