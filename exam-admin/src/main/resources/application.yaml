@@ -7,11 +7,13 @@ spring:
     serialization:
       write-date-keys-as-timestamps: true
       write-null-map-values: true
+      write-enums-using-to-string: true
     constructor-detector: default
     date-format: java.text.SimpleDateFormat
     deserialization:
       accept-empty-array-as-null-object: true
       accept-empty-string-as-null-object: true
+      read-enums-using-to-string: true
 # debug
 debug: false
 # server配置

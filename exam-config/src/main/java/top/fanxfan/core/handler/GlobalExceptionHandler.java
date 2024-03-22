@@ -6,11 +6,13 @@ import cn.dev33.satoken.exception.NotRoleException;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.stream.StreamUtil;
 import cn.hutool.core.util.ObjectUtil;
+import jakarta.persistence.PersistenceException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import top.fanxfan.core.exception.ServiceException;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
 /**
@@ -30,6 +33,7 @@ import java.util.Objects;
  */
 @Slf4j
 @RestControllerAdvice
+@SuppressWarnings("all")
 public class GlobalExceptionHandler {
 
     /**
@@ -59,7 +63,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
         String requestUri = request.getRequestURI();
         log.error("请求地址'{}',认证失败'{}',无法访问系统资源", requestUri, e.getMessage());
-        return ResponseEntity.of(ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "认证失败，无法访问系统资源")).build();
+        return ResponseEntity.of(ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "未登录，请登录后重试")).build();
     }
 
 
@@ -117,6 +121,26 @@ public class GlobalExceptionHandler {
                         e.getName(),
                         Objects.requireNonNull(e.getRequiredType()).getName(),
                         e.getValue()))).build();
+    }
+
+    /**
+     * 数据库相关异常
+     */
+    @ExceptionHandler(value = {DataAccessException.class, PersistenceException.class})
+    public ResponseEntity<Void> HandleDataException(RuntimeException e, HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        log.error("请求地址'{}',发生数据库相关异常.", requestUri, e);
+        return ResponseEntity.of(ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "数据库相关异常,请联系管理人员")).build();
+    }
+
+    /**
+     * 数据库相关异常
+     */
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<Void> HandleSQLException(SQLException e, HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        log.error("请求地址'{}',发生数据库SQL相关异常.", requestUri, e);
+        return ResponseEntity.of(ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "数据库相关异常,请联系管理人员")).build();
     }
 
     /**

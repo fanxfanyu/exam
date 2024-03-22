@@ -1,5 +1,6 @@
 package top.fanxfan.base.service;
 
+import top.fanxfan.base.vo.ChangePasswordVo;
 import top.fanxfan.base.vo.LoginVo;
 
 /**
@@ -27,12 +28,10 @@ public interface AuthService {
     Boolean sendCode(String account, Integer type);
 
     /**
-     * 校验密码
+     * 修改密码
      *
-     * @param userId          用户ID
-     * @param password        明文密码
-     * @param encryptPassword 密文密码
-     * @return 是否匹配
+     * @param changePasswordVo {@link ChangePasswordVo}
+     * @return 是否修改成功
      */
-    boolean isPasswordMatch(Long userId, String password, String encryptPassword);
+    Boolean changePassword(ChangePasswordVo changePasswordVo);
 }

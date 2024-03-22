@@ -27,7 +27,7 @@ import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_ENTITY_N
         @Index(name = "typeIndex", columnList = "type"),
         @Index(name = "degreeIndex", columnList = "degree")
 })
-public class Question extends AbstractEntity<Question> {
+public final class Question extends AbstractEntity<Question> {
 
     /**
      * 试题类型

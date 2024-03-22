@@ -11,7 +11,7 @@ public interface BaseErrorConstants {
     /**
      * 密码不正确
      */
-    String PASSWORD_NOT_MATCH_MESSAGE = "密码不正确";
+    String USERNAME_PASSWORD_NOT_MATCH_MESSAGE = "用户名或密码不正确";
 
     /**
      * 用户不存在

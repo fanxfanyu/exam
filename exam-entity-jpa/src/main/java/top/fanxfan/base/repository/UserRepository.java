@@ -3,8 +3,10 @@ package top.fanxfan.base.repository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import top.fanxfan.base.entity.User;
+import top.fanxfan.base.enums.UserTypeEnum;
 import top.fanxfan.core.repository.BaseRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,5 +33,19 @@ public interface UserRepository extends BaseRepository<User> {
      */
     Optional<User> findByEmail(@NonNull String email);
 
+    /**
+     * 根据用户类型查找用户
+     *
+     * @param userType 用户类型
+     * @return 用户信息
+     */
+    List<User> findByUserType(UserTypeEnum userType);
 
+    /**
+     * 查找用户
+     *
+     * @param mobile 手机号
+     * @return 用户信息
+     */
+    Optional<User> findByMobile(String mobile);
 }

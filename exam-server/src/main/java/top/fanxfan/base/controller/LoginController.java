@@ -1,14 +1,21 @@
 package top.fanxfan.base.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.stp.StpUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.fanxfan.base.service.AuthService;
 import top.fanxfan.base.service.CaptchaService;
+import top.fanxfan.base.vo.ChangePasswordVo;
 import top.fanxfan.base.vo.LoginVo;
+import top.fanxfan.core.limit.LimitTypeEnum;
 import top.fanxfan.core.limit.apo.RedisRateLimitConfig;
 
 import java.util.Map;
@@ -35,6 +42,7 @@ public class LoginController {
      * @return 响应结果
      */
     @GetMapping("/code")
+    @SaIgnore
     @RedisRateLimitConfig(key = "login:code:key", rateType = RateType.PER_CLIENT, replenishRate = 1, burstCapacity = 5)
     public ResponseEntity<Map<String, Object>> code() {
         return ResponseEntity.ok(captchaService.create());
@@ -43,12 +51,50 @@ public class LoginController {
     /**
      * 登录
      *
-     * @param longinVo 登录信息
+     * @param longinVo 登录信息 {@link LoginVo}
      * @return 响应结果
      */
     @PostMapping
-    @RedisRateLimitConfig
-    public ResponseEntity<Boolean> login(@RequestBody LoginVo longinVo) {
+    @SaIgnore
+    @RedisRateLimitConfig(key = "login:key", burstCapacity = 10, replenishRate = 2)
+    public ResponseEntity<Boolean> login(@RequestBody @Validated LoginVo longinVo) {
         return ResponseEntity.ok(authService.login(longinVo));
+    }
+
+    /**
+     * 退出登录
+     */
+    @SaCheckLogin
+    @PostMapping("/logout")
+    public ResponseEntity<Boolean> logout() {
+        StpUtil.logout();
+        return ResponseEntity.ok(true);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param changePasswordVo 修改密码VO {@link ChangePasswordVo}
+     * @return 响应结果
+     */
+    @SaCheckLogin
+    @PutMapping("/change")
+    @RedisRateLimitConfig(key = "login:change:password", replenishRate = 1, burstCapacity = 5, limitType = LimitTypeEnum.USER, timeout = 10, unit = RateIntervalUnit.MINUTES)
+    public ResponseEntity<Boolean> changePassword(@RequestBody ChangePasswordVo changePasswordVo) {
+        return ResponseEntity.ok(authService.changePassword(changePasswordVo));
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param account 手机号
+     * @param type    短信类型
+     * @return 响应结果
+     */
+    @SaIgnore
+    @PostMapping("/{account}/{type}")
+    @RedisRateLimitConfig(key = "login:send:code", replenishRate = 1, burstCapacity = 5, timeout = 600, unit = RateIntervalUnit.SECONDS)
+    public ResponseEntity<Boolean> sendSmsCode(@PathVariable String account, @PathVariable Integer type) {
+        return ResponseEntity.ok(authService.sendCode(account, type));
     }
 }

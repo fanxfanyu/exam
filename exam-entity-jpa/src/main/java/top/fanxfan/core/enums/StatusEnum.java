@@ -1,5 +1,6 @@
 package top.fanxfan.core.enums;
 
+import cn.hutool.core.util.ArrayUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -26,4 +27,8 @@ public enum StatusEnum {
      * 名称
      */
     private final String name;
+
+    public static StatusEnum getByValue(Integer value) {
+        return ArrayUtil.firstMatch((obj) -> obj.getValue().equals(value), values());
+    }
 }

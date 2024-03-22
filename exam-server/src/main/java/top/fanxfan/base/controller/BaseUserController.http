@@ -1,0 +1,38 @@
+### 新增用户
+POST http://127.0.0.1:8081/user
+Content-Type: application/json
+
+{
+  "userName": "test",
+  "email": "test@example.com",
+  "mobile": "1234567890",
+  "userType": "USER"
+}
+
+### 更新用户
+PUT http://127.0.0.1:8081/user
+Content-Type: application/json
+
+{
+  "id": 3,
+  "userName": "test001",
+  "email": "test@example.com",
+  "mobile": "123456754145",
+  "userType": "USER",
+  "status": "SHOW"
+}
+
+### 获取用户信息
+GET http://127.0.0.1:8081/user/3
+
+### 用户列表
+GET http://127.0.0.1:8081/user/list?page=0&pageSize=500
+
+### 重置密码
+PUT http://127.0.0.1:8081/user/reset/3
+
+### 删除用户
+DELETE http://127.0.0.1:8081/user/3
+
+### 修改用户状态
+PUT http://127.0.0.1:8081/user/status/3

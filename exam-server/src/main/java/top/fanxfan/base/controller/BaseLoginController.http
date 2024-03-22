@@ -1,0 +1,57 @@
+### 验证码获取
+GET http://127.0.0.1:8081/auth/code
+
+
+### super登录
+POST http://127.0.0.1:8081/auth
+Content-Type: application/json
+
+{
+  "account": "super",
+  "password": "fanxfan",
+  "type": 0,
+  "captcha": "",
+  "captchaKey": ""
+}
+
+
+### 短信验证码登录
+POST http://127.0.0.1:8081/auth
+Content-Type: application/json
+
+{
+  "account": "13800000000",
+  "password": "dxkNRx",
+  "type": 2,
+  "captcha": "",
+  "captchaKey": ""
+}
+
+### test登录
+POST http://127.0.0.1:8081/auth
+Content-Type: application/json
+
+{
+  "account": "test",
+  "password": "password",
+  "type": 0,
+  "captcha": "",
+  "captchaKey": ""
+}
+
+### 退出
+POST http://127.0.0.1:8081/auth/logout
+
+
+### 修改密码
+PUT http://127.0.0.1:8081/auth/change
+Content-Type: application/json
+
+{
+  "userId": 3,
+  "oldPassword": "password",
+  "newPassword": "password"
+}
+
+### 发送短信验证码
+POST http://127.0.0.1:8081/auth/13800000000/1

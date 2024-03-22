@@ -4,12 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -36,7 +33,10 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @ToString
 @Schema(name = "abstractEntity", description = "抽象基础实体", implementation = Specification.class)
-public abstract class AbstractEntity<T> implements Serializable, Specification<T> {
+@Slf4j
+@SuppressWarnings("all")
+public abstract class AbstractEntity<T> implements Serializable {
+
     /**
      * 主键id
      */
@@ -50,7 +50,7 @@ public abstract class AbstractEntity<T> implements Serializable, Specification<T
      */
     @Schema(name = "status", description = "行状态", oneOf = StatusEnum.class)
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(20) default 'SHOW'")
+    @Column(columnDefinition = "varchar(20) default 'SHOW'", nullable = false)
     @Builder.Default
     private StatusEnum status = StatusEnum.SHOW;
 
@@ -80,9 +80,4 @@ public abstract class AbstractEntity<T> implements Serializable, Specification<T
     @JsonIgnore
     @Schema(name = "version", hidden = true, description = "版本号")
     private Integer version;
-
-    @Override
-    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return null;
-    }
 }
