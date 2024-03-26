@@ -1,10 +1,10 @@
 package top.fanxfan.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
 import top.fanxfan.core.entity.AbstractEntity;
@@ -12,6 +12,8 @@ import top.fanxfan.core.entity.AbstractEntity;
 import java.util.List;
 
 import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_CATALOG_ENTITY_NAME;
+import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_CATALOG_RELATION_ENTITY_NAME;
+import static top.fanxfan.core.constants.FieldGlobalConstants.*;
 
 /**
  * 试题类型
@@ -19,6 +21,7 @@ import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_CATALOG_
  * @author fanxfan
  */
 @Getter
+@Setter
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +29,7 @@ import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_CATALOG_
 @ToString(callSuper = true)
 @Entity
 @Table(name = QUESTION_CATALOG_ENTITY_NAME)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public final class QuestionCatalog extends AbstractEntity<QuestionCatalog> {
 
     /**
@@ -42,8 +46,9 @@ public final class QuestionCatalog extends AbstractEntity<QuestionCatalog> {
      * 父级分类
      */
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parentId")
+    @JoinColumn(name = PARENT_ID_FIELD)
     @ToString.Exclude
+    @JsonSerialize
     private QuestionCatalog parent;
 
     /**
@@ -58,7 +63,10 @@ public final class QuestionCatalog extends AbstractEntity<QuestionCatalog> {
      */
     private transient Integer questionCount;
 
-    @OneToMany(mappedBy = "questionCatalog")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = QUESTION_CATALOG_RELATION_ENTITY_NAME,
+            joinColumns = @JoinColumn(name = QUESTION_CATALOG_ID_FIELD),
+            inverseJoinColumns = @JoinColumn(name = QUESTION_ID_FIELD))
     @ToString.Exclude
     private List<Question> questions;
 }

@@ -5,7 +5,8 @@ package top.fanxfan.core.constants;
  */
 public class EntityGlobalConstants {
 
-    private EntityGlobalConstants(){}
+    private EntityGlobalConstants() {
+    }
 
     /**
      * 通用前缀
@@ -26,6 +27,11 @@ public class EntityGlobalConstants {
      * 试题分类实体名称
      */
     public static final String QUESTION_CATALOG_ENTITY_NAME = PREFIX + "question_catalog";
+
+    /**
+     * 试题分类与试题关系实体名称
+     */
+    public static final String QUESTION_CATALOG_RELATION_ENTITY_NAME = PREFIX + "question_catalog_relation";
 
     /**
      * 试题选项实体名称

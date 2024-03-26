@@ -32,11 +32,5 @@ public class QuestionOption extends AbstractEntity<QuestionOption> {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private QuestionResult result = QuestionResult.WRONG;
-
-    /**
-     * 试题
-     */
-    @ManyToOne
-    @ToString.Exclude
-    private Question question;
 }
+

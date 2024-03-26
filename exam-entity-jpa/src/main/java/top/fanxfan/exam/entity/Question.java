@@ -1,5 +1,7 @@
 package top.fanxfan.exam.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -9,7 +11,9 @@ import top.fanxfan.exam.enums.QuestionTypeEnum;
 
 import java.util.List;
 
+import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_CATALOG_RELATION_ENTITY_NAME;
 import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_ENTITY_NAME;
+import static top.fanxfan.core.constants.FieldGlobalConstants.*;
 
 /**
  * 试题
@@ -27,6 +31,7 @@ import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_ENTITY_N
         @Index(name = "typeIndex", columnList = "type"),
         @Index(name = "degreeIndex", columnList = "degree")
 })
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public final class Question extends AbstractEntity<Question> {
 
     /**
@@ -53,8 +58,6 @@ public final class Question extends AbstractEntity<Question> {
      *     </ul>
      * </p>
      */
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
     @Column(columnDefinition = "TEXT")
     private String title;
 
@@ -68,8 +71,11 @@ public final class Question extends AbstractEntity<Question> {
     /**
      *
      */
-    @ManyToOne
-    @JoinColumn(name = "catalogId")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @JoinTable(name = QUESTION_CATALOG_RELATION_ENTITY_NAME,
+            joinColumns = @JoinColumn(name = QUESTION_ID_FIELD),
+            inverseJoinColumns = @JoinColumn(name = QUESTION_CATALOG_ID_FIELD))
+    @ToString.Exclude
     private QuestionCatalog questionCatalog;
 
     /**
@@ -95,15 +101,15 @@ public final class Question extends AbstractEntity<Question> {
      * 材料题问题
      */
     @OneToMany
-    @JoinColumn(name = "parentId")
+    @JoinColumn(name = PARENT_ID_FIELD)
     @ToString.Exclude
     private List<Question> children;
 
     /**
      * 试题选项
      */
-    @OneToMany
-    @JoinColumn(name = "questionId")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = QUESTION_ID_FIELD)
     @ToString.Exclude
     private List<QuestionOption> options;
 }

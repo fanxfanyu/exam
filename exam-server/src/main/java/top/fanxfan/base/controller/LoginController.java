@@ -64,7 +64,6 @@ public class LoginController {
     /**
      * 退出登录
      */
-    @SaCheckLogin
     @PostMapping("/logout")
     public ResponseEntity<Boolean> logout() {
         StpUtil.logout();
@@ -93,7 +92,7 @@ public class LoginController {
      */
     @SaIgnore
     @PostMapping("/{account}/{type}")
-    @RedisRateLimitConfig(key = "login:send:code", replenishRate = 1, burstCapacity = 5, timeout = 600, unit = RateIntervalUnit.SECONDS)
+    @RedisRateLimitConfig(key = "login:send:code", replenishRate = 1, burstCapacity = 5)
     public ResponseEntity<Boolean> sendSmsCode(@PathVariable String account, @PathVariable Integer type) {
         return ResponseEntity.ok(authService.sendCode(account, type));
     }

@@ -8,6 +8,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -34,6 +36,8 @@ import java.util.Date;
 @ToString
 @Schema(name = "abstractEntity", description = "抽象基础实体", implementation = Specification.class)
 @Slf4j
+@DynamicUpdate
+@DynamicInsert
 @SuppressWarnings("all")
 public abstract class AbstractEntity<T> implements Serializable {
 

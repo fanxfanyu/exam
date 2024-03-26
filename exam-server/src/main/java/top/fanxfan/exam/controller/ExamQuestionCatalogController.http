@@ -1,0 +1,28 @@
+### 分类树
+GET http://127.0.0.1:8081/question/catalog/tree
+
+
+### 新增分类树
+POST http://127.0.0.1:8081/question/catalog
+Content-Type: application/json
+
+{
+  "name": "spring",
+  "sequence": 0,
+  "parentId": 1
+}
+
+### 删除分类
+DELETE http://127.0.0.1:8081/question/catalog/2
+
+
+### 更新分类
+PUT http://127.0.0.1:8081/question/catalog
+Content-Type: application/json
+
+{
+  "id": 5,
+  "name": "spring",
+  "sequence": 10,
+  "parentId": 1
+}

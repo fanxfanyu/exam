@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * 基础查询类
@@ -14,6 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Validated
 public abstract class BaseSearch {
 
     /**

@@ -1,0 +1,2 @@
+### 删除选项
+DELETE http://127.0.0.1:8081/question/option/7

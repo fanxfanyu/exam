@@ -1,0 +1,63 @@
+### 试题列表
+GET http://127.0.0.1:8081/question/list?page=0&pageSize=10
+
+### 新增试题
+POST http://127.0.0.1:8081/question
+Content-Type: application/json
+
+{
+  "title": "测试题目",
+  "options": [
+    {
+      "content": "选项1",
+      "result": "WRONG"
+    },
+    {
+      "content": "选项2",
+      "result": "RIGHT"
+    },
+    {
+      "content": "选项3",
+      "result": "WRONG"
+    }
+  ],
+  "type": "SINGLE_CHOICE",
+  "degree": "EASY",
+  "analysis": "",
+  "answer": "",
+  "catalogId": 2
+}
+
+### 更新试题
+PUT http://127.0.0.1:8081/question
+Content-Type: application/json
+
+{
+  "id": 2,
+  "title": "测试题目",
+  "options": [
+    {
+      "content": "选项1",
+      "result": "WRONG"
+    },
+    {
+      "content": "选项2",
+      "result": "RIGHT"
+    },
+    {
+      "content": "选项3",
+      "result": "WRONG"
+    }
+  ],
+  "type": "SINGLE_CHOICE",
+  "degree": "EASY",
+  "analysis": "",
+  "answer": "",
+  "catalogId": 1
+}
+
+### 获取试题信息
+GET http://127.0.0.1:8081/question/2
+
+### 删除试题
+DELETE http://127.0.0.1:8081/question/1
