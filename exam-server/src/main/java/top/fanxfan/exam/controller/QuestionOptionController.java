@@ -2,6 +2,8 @@ package top.fanxfan.exam.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import top.fanxfan.exam.service.QuestionOptionService;
 @RequestMapping("/question/option")
 @SaCheckLogin
 @Slf4j
+@Tag(name = "试题选项Controller", description = "试题选项管理")
 public class QuestionOptionController {
 
     private final QuestionOptionService questionOptionService;
@@ -31,6 +34,7 @@ public class QuestionOptionController {
      * @param id 选项ID
      * @return 结果
      */
+    @Operation(summary = "删除选项")
     @DeleteMapping("/{id}")
     @SaCheckPermission(value = "question:option:delete", orRole = "super")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {

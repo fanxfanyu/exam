@@ -3,6 +3,7 @@ package top.fanxfan.base.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ public class LoginController {
      *
      * @return 响应结果
      */
+    @Operation(summary = "获取验证码")
     @GetMapping("/code")
     @SaIgnore
     @RedisRateLimitConfig(key = "login:code:key", rateType = RateType.PER_CLIENT, replenishRate = 1, burstCapacity = 5)
@@ -54,6 +56,7 @@ public class LoginController {
      * @param longinVo 登录信息 {@link LoginVo}
      * @return 响应结果
      */
+    @Operation(summary = "登录")
     @PostMapping
     @SaIgnore
     @RedisRateLimitConfig(key = "login:key", burstCapacity = 10, replenishRate = 2)
@@ -64,6 +67,7 @@ public class LoginController {
     /**
      * 退出登录
      */
+    @Operation(summary = "退出登录")
     @PostMapping("/logout")
     public ResponseEntity<Boolean> logout() {
         StpUtil.logout();
@@ -76,6 +80,7 @@ public class LoginController {
      * @param changePasswordVo 修改密码VO {@link ChangePasswordVo}
      * @return 响应结果
      */
+    @Operation(summary = "修改密码")
     @SaCheckLogin
     @PutMapping("/change")
     @RedisRateLimitConfig(key = "login:change:password", replenishRate = 1, burstCapacity = 5, limitType = LimitTypeEnum.USER, timeout = 10, unit = RateIntervalUnit.MINUTES)
@@ -90,6 +95,7 @@ public class LoginController {
      * @param type    短信类型
      * @return 响应结果
      */
+    @Operation(summary = "发送短信验证码")
     @SaIgnore
     @PostMapping("/{account}/{type}")
     @RedisRateLimitConfig(key = "login:send:code", replenishRate = 1, burstCapacity = 5)

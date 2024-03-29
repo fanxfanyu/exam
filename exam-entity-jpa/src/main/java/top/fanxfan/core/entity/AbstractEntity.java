@@ -13,7 +13,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import top.fanxfan.core.enums.StatusEnum;
 
@@ -34,7 +33,7 @@ import java.util.Date;
 @EntityListeners(value = AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @ToString
-@Schema(name = "abstractEntity", description = "抽象基础实体", implementation = Specification.class)
+@Schema(name = "abstractEntity", description = "抽象基础实体", implementation = Serializable.class,discriminatorProperty = "type")
 @Slf4j
 @DynamicUpdate
 @DynamicInsert

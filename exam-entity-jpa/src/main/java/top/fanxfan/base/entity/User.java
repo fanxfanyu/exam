@@ -46,7 +46,7 @@ public class User extends AbstractEntity<User> {
     /**
      * 用户状态
      */
-    @Schema(name = "userStatus", description = "用户状态")
+    @Schema(name = "userStatus", description = "用户状态", minimum = "0", maximum = "1", example = "0", type = "integer")
     @Column(columnDefinition = "int default 0")
     private int userStatus;
 
@@ -69,6 +69,7 @@ public class User extends AbstractEntity<User> {
      */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Schema(name = "userType", description = "用户类型", example = "USER")
     private UserTypeEnum userType;
 
 }

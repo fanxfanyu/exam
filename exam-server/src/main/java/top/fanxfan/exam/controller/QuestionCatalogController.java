@@ -1,6 +1,8 @@
 package top.fanxfan.exam.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/question/catalog")
 @Slf4j
+@Tag(name = "试题分类Controller", description = "试题分类相关")
 public class QuestionCatalogController {
 
     private final QuestionCatalogService questionCatalogService;
@@ -30,6 +33,7 @@ public class QuestionCatalogController {
      *
      * @return 试题分类树
      */
+    @Operation(summary = "获取试题分类树")
     @GetMapping("/tree")
     @SaCheckPermission(value = "question:catalog:tree", orRole = "super")
     public ResponseEntity<List<QuestionCatalog>> tree() {
@@ -42,6 +46,7 @@ public class QuestionCatalogController {
      * @param questionCatalogVo 试题分类 {@link  QuestionCatalogVo}
      * @return 试题分类
      */
+    @Operation(summary = "新增试题分类")
     @PostMapping
     @SaCheckPermission(value = "question:catalog:add", orRole = "super")
     public ResponseEntity<Boolean> add(@RequestBody @Validated QuestionCatalogVo questionCatalogVo) {
@@ -54,6 +59,7 @@ public class QuestionCatalogController {
      * @param questionCatalogVo 试题分类 {@link  QuestionCatalogVo}
      * @return 响应结果
      */
+    @Operation(summary = "修改试题分类")
     @PutMapping
     @SaCheckPermission(value = "question:catalog:update", orRole = "super")
     public ResponseEntity<Boolean> update(@RequestBody @Validated QuestionCatalogVo questionCatalogVo) {
@@ -66,6 +72,7 @@ public class QuestionCatalogController {
      * @param id 试题分类id
      * @return 响应结果
      */
+    @Operation(summary = "删除试题分类")
     @DeleteMapping("/{id}")
     @SaCheckPermission(value = "question:catalog:delete", orRole = "super")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {

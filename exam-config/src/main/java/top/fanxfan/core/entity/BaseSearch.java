@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import java.io.Serializable;
+
 /**
  * 基础查询类
  * <p>主要限制和操作页数和分页数量</p>
@@ -16,7 +18,8 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @Setter
 @Validated
-public abstract class BaseSearch {
+@Schema(description = "基础查询类", implementation = Serializable.class, name = "BaseSearch", discriminatorProperty = "type")
+public abstract class BaseSearch implements Serializable {
 
     /**
      * 查询页数

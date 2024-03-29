@@ -2,6 +2,7 @@ package top.fanxfan.exam.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +14,8 @@ import java.util.List;
 
 import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_CATALOG_RELATION_ENTITY_NAME;
 import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_ENTITY_NAME;
-import static top.fanxfan.core.constants.FieldGlobalConstants.*;
+import static top.fanxfan.core.constants.FieldGlobalConstants.QUESTION_CATALOG_ID_FIELD;
+import static top.fanxfan.core.constants.FieldGlobalConstants.QUESTION_ID_FIELD;
 
 /**
  * 试题
@@ -31,12 +33,14 @@ import static top.fanxfan.core.constants.FieldGlobalConstants.*;
         @Index(name = "typeIndex", columnList = "type"),
         @Index(name = "degreeIndex", columnList = "degree")
 })
+@Schema(description = "试题", name = "Question")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public final class Question extends AbstractEntity<Question> {
 
     /**
      * 试题类型
      */
+    @Schema(description = "试题类型", example = "SINGLE_CHOICE")
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private QuestionTypeEnum type = QuestionTypeEnum.SINGLE_CHOICE;
@@ -58,12 +62,14 @@ public final class Question extends AbstractEntity<Question> {
      *     </ul>
      * </p>
      */
+    @Schema(name = "title", description = "试题标题")
     @Column(columnDefinition = "TEXT")
     private String title;
 
     /**
      * 难易程度
      */
+    @Schema(description = "难易程度", example = "EASY", name = "degree")
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private QuestionDegreeEnum degree = QuestionDegreeEnum.EASY;
@@ -71,6 +77,7 @@ public final class Question extends AbstractEntity<Question> {
     /**
      *
      */
+    @Schema(description = "试题目录", name = "questionCatalog")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     @JoinTable(name = QUESTION_CATALOG_RELATION_ENTITY_NAME,
             joinColumns = @JoinColumn(name = QUESTION_ID_FIELD),
@@ -81,6 +88,7 @@ public final class Question extends AbstractEntity<Question> {
     /**
      * 答案解析
      */
+    @Schema(name = "analysis", description = "答案解析")
     @Column(columnDefinition = "TEXT")
     private String analysis;
 
@@ -95,19 +103,13 @@ public final class Question extends AbstractEntity<Question> {
      * 无效，无答案
      * </p>
      */
+    @Schema(name = "answer", description = "答案")
     private String answer;
-
-    /**
-     * 材料题问题
-     */
-    @OneToMany
-    @JoinColumn(name = PARENT_ID_FIELD)
-    @ToString.Exclude
-    private List<Question> children;
 
     /**
      * 试题选项
      */
+    @Schema(name = "options", description = "试题选项")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = QUESTION_ID_FIELD)
     @ToString.Exclude
