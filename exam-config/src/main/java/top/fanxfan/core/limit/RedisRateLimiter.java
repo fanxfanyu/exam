@@ -1,22 +1,22 @@
 package top.fanxfan.core.limit;
 
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 
 /**
+ * 限流器
+ *
  * @author fanxfan
  */
+@Component
+@RequiredArgsConstructor
 public class RedisRateLimiter {
 
-    @Resource
-    private RedissonClient redissonClient;
-
-    public RedisRateLimiter(RedissonClient redissonClient) {
-        this.redissonClient = redissonClient;
-    }
+    private final RedissonClient redissonClient;
 
     /**
      * 限流器限制器

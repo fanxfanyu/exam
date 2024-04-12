@@ -1,4 +1,4 @@
-package top.fanxfan.core.limit.apo;
+package top.fanxfan.core.limit.aop;
 
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
@@ -30,11 +30,6 @@ public @interface RedisRateLimitConfig {
      * 类型
      */
     RateType rateType() default RateType.OVERALL;
-
-    /**
-     * 令牌填充速度
-     */
-    int replenishRate() default 10;
 
     /**
      * 令牌桶容量

@@ -14,6 +14,10 @@ spring:
       accept-empty-array-as-null-object: true
       accept-empty-string-as-null-object: true
       read-enums-using-to-string: true
+  data:
+    redis:
+      repositories:
+        enabled: false
 # debug
 debug: false
 # server配置
@@ -22,7 +26,7 @@ server:
     threads:
       max: 600
       min-spare: 50
-    accesslog:
+    access-log:
       enabled: true
       directory: logs
       encoding: utf-8

@@ -70,7 +70,7 @@ class AuthServiceTest extends SpringBootBaseTest {
         LoginVo loginVo = new LoginVo();
         loginVo.setAccount("fanxfan");
         loginVo.setPassword("123456");
-        loginVo.setType(LoginTypeEnum.USERNAME_LOGIN.getValue());
+        loginVo.setType(LoginTypeEnum.USERNAME_LOGIN);
         loginVo.setCaptcha("QUsa");
         loginVo.setCaptchaKey("80a5c15f-accf-4087-999b-1ecd4dd131fa");
         Boolean login = authService.login(loginVo);
@@ -86,7 +86,7 @@ class AuthServiceTest extends SpringBootBaseTest {
         LoginVo loginVo = new LoginVo();
         loginVo.setAccount("fanxfan");
         loginVo.setPassword("000000");
-        loginVo.setType(LoginTypeEnum.USERNAME_LOGIN.getValue());
+        loginVo.setType(LoginTypeEnum.USERNAME_LOGIN);
         for (int i = 0; i < 10; i++) {
             try {
                 log.error("login count {}", i);

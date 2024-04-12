@@ -18,6 +18,7 @@ import top.fanxfan.base.search.UserSearchVo;
 import top.fanxfan.base.service.UserService;
 import top.fanxfan.base.vo.UserVo;
 import top.fanxfan.core.enums.StatusEnum;
+import top.fanxfan.core.exception.ServiceException;
 import top.fanxfan.core.tools.PageUtils;
 import top.fanxfan.core.tools.SecretUtils;
 
@@ -103,13 +104,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User infoById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException(USER_NOT_EXIST_MESSAGE));
+        return userRepository.findById(id).orElseThrow(() -> new ServiceException(USER_NOT_EXIST_MESSAGE));
     }
 
     @Override
     public Boolean update(UserVo userVo) {
         Assert.notNull(userVo, "用户信息不能为空");
-        User user = userRepository.findById(userVo.getId()).orElseThrow(() -> new RuntimeException(USER_NOT_EXIST_MESSAGE));
+        User user = userRepository.findById(userVo.getId()).orElseThrow(() -> new ServiceException(USER_NOT_EXIST_MESSAGE));
         BeanUtil.copyProperties(userVo, user);
         userRepository.saveAndFlush(user);
         return true;
@@ -117,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean resetPassword(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException(USER_NOT_EXIST_MESSAGE));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ServiceException(USER_NOT_EXIST_MESSAGE));
         user.setPassword(SecretUtils.encrypt(DEFAULT_PASSWORD));
         userRepository.saveAndFlush(user);
         return true;
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean deleteById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException(USER_NOT_EXIST_MESSAGE));
+        User user = userRepository.findById(id).orElseThrow(() -> new ServiceException(USER_NOT_EXIST_MESSAGE));
         if (user.getUserType().equals(UserTypeEnum.SUPER)) {
             return false;
         }
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean status(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException(USER_NOT_EXIST_MESSAGE));
+        User user = userRepository.findById(id).orElseThrow(() -> new ServiceException(USER_NOT_EXIST_MESSAGE));
         user.setUserStatus(user.getUserStatus() == 0 ? 1 : 0);
         userRepository.saveAndFlush(user);
         return true;

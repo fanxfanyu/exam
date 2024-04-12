@@ -35,7 +35,7 @@ import static top.fanxfan.core.constants.FieldGlobalConstants.QUESTION_ID_FIELD;
 })
 @Schema(description = "试题", name = "Question")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public final class Question extends AbstractEntity<Question> {
+public class Question extends AbstractEntity<Question> {
 
     /**
      * 试题类型
@@ -75,7 +75,7 @@ public final class Question extends AbstractEntity<Question> {
     private QuestionDegreeEnum degree = QuestionDegreeEnum.EASY;
 
     /**
-     *
+     * 试题目录
      */
     @Schema(description = "试题目录", name = "questionCatalog")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH})

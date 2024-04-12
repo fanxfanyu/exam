@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.fanxfan.base.entity.User;
-import top.fanxfan.base.enums.LoginTypeEnum;
 import top.fanxfan.base.repository.UserRepository;
 import top.fanxfan.base.service.AuthService;
 import top.fanxfan.base.service.CaptchaService;
@@ -25,8 +24,7 @@ import top.fanxfan.core.tools.SecretUtils;
 
 import java.time.Duration;
 
-import static top.fanxfan.base.constants.BaseErrorConstants.USERNAME_PASSWORD_NOT_MATCH_MESSAGE;
-import static top.fanxfan.base.constants.BaseErrorConstants.VERIIFY_CODE_INVIDE;
+import static top.fanxfan.base.constants.BaseErrorConstants.*;
 import static top.fanxfan.core.constants.BaseRedisKeyConstants.PASSWORD_ATTEMPT_COUNT;
 import static top.fanxfan.core.constants.BaseRedisKeyConstants.SEND_CODE;
 
@@ -52,15 +50,22 @@ public class AuthServiceImpl implements AuthService {
         Assert.notNull(loginVo, "登录信息不能为空");
         // 验证验证码
         captchaService.verify(loginVo.getCaptchaKey(), loginVo.getCaptcha());
+        User user;
         // 获取登录类型
-        LoginTypeEnum byValue = LoginTypeEnum.getByValue(loginVo.getType());
-        switch (byValue) {
-            case VERIFICATION_CODE -> verificationCode(loginVo);
-            case EMAIL_LOGIN -> emailLogin(loginVo);
-            case USERNAME_LOGIN -> usernameLogin(loginVo);
-            default -> throw new ServiceException("无效登录方式");
+        switch (loginVo.getType()) {
+            case VERIFICATION_CODE -> user = verificationCode(loginVo);
+            case EMAIL_LOGIN -> user = emailLogin(loginVo);
+            case USERNAME_LOGIN -> user = usernameLogin(loginVo);
+            default -> throw new ServiceException(INVALID_LOGIN_TYPE);
         }
-        return true;
+        if (user != null) {
+            // 其他限制，ip校验，黑名单校验
+            // 登录
+            StpUtil.setStpLogic(new StpLogic(user.getUserType().getValue()));
+            StpUtil.login(user.getId());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -68,15 +73,15 @@ public class AuthServiceImpl implements AuthService {
      *
      * @param loginVo 登录信息
      */
-    private void emailLogin(LoginVo loginVo) {
+    private User emailLogin(LoginVo loginVo) {
         User user = userRepository.findByEmail(loginVo.getAccount()).orElseThrow(() -> new ServiceException(USERNAME_PASSWORD_NOT_MATCH_MESSAGE));
         if (user.getUserStatus() != 0) {
-            throw new ServiceException("该账号已被禁用");
+            throw new ServiceException(USER_DISABLE);
         }
         // 验证密码
         if (passwordMatch(user.getId(), loginVo.getPassword(), user.getPassword())) {
             // 是否重新验证邮箱
-            StpUtil.login(user.getId());
+            return user;
         } else {
             throw new ServiceException(USERNAME_PASSWORD_NOT_MATCH_MESSAGE);
         }
@@ -87,14 +92,13 @@ public class AuthServiceImpl implements AuthService {
      *
      * @param loginVo 登录信息
      */
-    private void usernameLogin(LoginVo loginVo) {
+    private User usernameLogin(LoginVo loginVo) {
         User user = userRepository.findByUserName(loginVo.getAccount()).orElseThrow(() -> new ServiceException(USERNAME_PASSWORD_NOT_MATCH_MESSAGE));
         if (user.getUserStatus() != 0) {
-            throw new ServiceException("该账号已被禁用");
+            throw new ServiceException(USER_DISABLE);
         }
         if (passwordMatch(user.getId(), loginVo.getPassword(), user.getPassword())) {
-            StpUtil.setStpLogic(new StpLogic(user.getUserType().getValue()));
-            StpUtil.login(user.getId());
+            return user;
         } else {
             throw new ServiceException(USERNAME_PASSWORD_NOT_MATCH_MESSAGE);
         }
@@ -105,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
      *
      * @param loginVo 登录信息
      */
-    private void verificationCode(LoginVo loginVo) {
+    private User verificationCode(LoginVo loginVo) {
         // 获取用户
         User user = userRepository.findByMobile(loginVo.getAccount()).orElseThrow(() -> new ServiceException(USERNAME_PASSWORD_NOT_MATCH_MESSAGE));
         // 获取手机验证码,数据库获取 or redis获取
@@ -113,9 +117,7 @@ public class AuthServiceImpl implements AuthService {
         if (!code.equals(loginVo.getPassword())) {
             throw new ServiceException(USERNAME_PASSWORD_NOT_MATCH_MESSAGE);
         }
-        StpUtil.setStpLogic(new StpLogic(user.getUserType().getValue()));
-        // 登录
-        StpUtil.login(user.getId());
+        return user;
     }
 
     /**

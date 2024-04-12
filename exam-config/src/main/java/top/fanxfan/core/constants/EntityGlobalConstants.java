@@ -37,4 +37,29 @@ public class EntityGlobalConstants {
      * 试题选项实体名称
      */
     public static final String QUESTION_OPTION_ENTITY_NAME = PREFIX + "question_option";
+
+    /**
+     * 考试实体名称
+     */
+    public static final String EXAM_ENTITY_NAME = PREFIX + "exam";
+
+    /**
+     * 考试组成部分实体名称
+     */
+    public static final String EXAM_PART_ENTITY_NAME = PREFIX + "exam_part";
+    /**
+     * 试题实体名称
+     */
+    public static final String EXAM_QUESTION_ENTITY_NAME = PREFIX + "exam_question";
+
+
+    /**
+     * 用户考试实体名称
+     */
+    public static final String USER_EXAM_ENTITY_NAME = PREFIX + "user_exam";
+
+    /**
+     * 用户考试实体名称
+     */
+    public static final String USER_EXAM_PART_ENTITY_NAME = PREFIX + "user_exam_part";
 }

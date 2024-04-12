@@ -4,32 +4,43 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 试题难度
+ * 答题进程
  *
  * @author fanxfan
  */
 @Getter
 @AllArgsConstructor
-public enum QuestionDegreeEnum {
+public enum AnswerProcess {
 
     /**
-     * 简单
+     * 生成
      */
-    EASY("简单"),
+    GENERATE("生成"),
 
     /**
-     * 中等
+     * 答题
      */
-    INTERMEDIATE("中等"),
+    ANSWER("答题"),
 
     /**
-     * 困难
+     * 提交
      */
-    HARD("困难");
+    SUBMIT("提交"),
+
+    /**
+     * 批改
+     */
+    REVIEW("批改"),
+
+    /**
+     * 完成
+     */
+    FINISH("完成");
 
     /**
      * 名称
      */
     private final String name;
+
 
 }

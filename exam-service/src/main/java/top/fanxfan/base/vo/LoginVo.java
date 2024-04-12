@@ -30,11 +30,11 @@ public class LoginVo {
     private String password;
 
     /**
-     * 登录方式 {@link LoginTypeEnum#getValue()}
+     * 登录方式 {@link LoginTypeEnum}
      */
     @NotNull(message = "登录方式不能为空")
     @Schema(name = "type", description = "登录方式")
-    private Integer type;
+    private LoginTypeEnum type;
 
     /**
      * 验证码

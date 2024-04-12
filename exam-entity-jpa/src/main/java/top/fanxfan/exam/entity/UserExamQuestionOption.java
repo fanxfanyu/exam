@@ -6,12 +6,12 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import top.fanxfan.core.entity.AbstractEntity;
 import top.fanxfan.exam.enums.QuestionResult;
+import top.fanxfan.exam.enums.QuestionTypeEnum;
 
 import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_OPTION_ENTITY_NAME;
+import static top.fanxfan.core.constants.FieldGlobalConstants.USER_EXAM_ID_FIELD;
 
 /**
- * 试题选项
- *
  * @author fanxfan
  */
 @Getter
@@ -23,7 +23,22 @@ import static top.fanxfan.core.constants.EntityGlobalConstants.QUESTION_OPTION_E
 @Entity
 @Table(name = QUESTION_OPTION_ENTITY_NAME)
 @Schema(description = "试题选项", name = "QuestionOption")
-public class QuestionOption extends AbstractEntity<QuestionOption> {
+public class UserExamQuestionOption extends AbstractEntity<UserExamQuestionOption> {
+
+    /**
+     * 用户考试
+     */
+    @ManyToOne
+    @JoinColumn(name = USER_EXAM_ID_FIELD, nullable = false)
+    private UserExam userExam;
+
+    /**
+     * 试题选项类型
+     */
+    @Schema(description = "试题类型", example = "SINGLE_CHOICE")
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private QuestionTypeEnum type = QuestionTypeEnum.SINGLE_CHOICE;
 
     /**
      * 选项内容
@@ -39,5 +54,14 @@ public class QuestionOption extends AbstractEntity<QuestionOption> {
     @Builder.Default
     @Schema(description = "是否为正确选项", name = "result")
     private QuestionResult result = QuestionResult.WRONG;
-}
 
+    /**
+     * 是否选择
+     */
+    private Integer selected;
+
+    /**
+     * 选项分数
+     */
+    private Integer score;
+}

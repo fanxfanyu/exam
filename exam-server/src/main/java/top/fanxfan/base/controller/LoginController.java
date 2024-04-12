@@ -17,7 +17,7 @@ import top.fanxfan.base.service.CaptchaService;
 import top.fanxfan.base.vo.ChangePasswordVo;
 import top.fanxfan.base.vo.LoginVo;
 import top.fanxfan.core.limit.LimitTypeEnum;
-import top.fanxfan.core.limit.apo.RedisRateLimitConfig;
+import top.fanxfan.core.limit.aop.RedisRateLimitConfig;
 
 import java.util.Map;
 
@@ -45,7 +45,7 @@ public class LoginController {
     @Operation(summary = "获取验证码")
     @GetMapping("/code")
     @SaIgnore
-    @RedisRateLimitConfig(key = "login:code:key", rateType = RateType.PER_CLIENT, replenishRate = 1, burstCapacity = 5)
+    @RedisRateLimitConfig(key = "login:code:key", rateType = RateType.PER_CLIENT, burstCapacity = 5)
     public ResponseEntity<Map<String, Object>> code() {
         return ResponseEntity.ok(captchaService.create());
     }
@@ -59,7 +59,7 @@ public class LoginController {
     @Operation(summary = "登录")
     @PostMapping
     @SaIgnore
-    @RedisRateLimitConfig(key = "login:key", burstCapacity = 10, replenishRate = 2)
+    @RedisRateLimitConfig(key = "login:key", burstCapacity = 10)
     public ResponseEntity<Boolean> login(@RequestBody @Validated LoginVo longinVo) {
         return ResponseEntity.ok(authService.login(longinVo));
     }
@@ -83,7 +83,7 @@ public class LoginController {
     @Operation(summary = "修改密码")
     @SaCheckLogin
     @PutMapping("/change")
-    @RedisRateLimitConfig(key = "login:change:password", replenishRate = 1, burstCapacity = 5, limitType = LimitTypeEnum.USER, timeout = 10, unit = RateIntervalUnit.MINUTES)
+    @RedisRateLimitConfig(key = "login:change:password", burstCapacity = 5, limitType = LimitTypeEnum.USER, timeout = 10, unit = RateIntervalUnit.MINUTES)
     public ResponseEntity<Boolean> changePassword(@RequestBody ChangePasswordVo changePasswordVo) {
         return ResponseEntity.ok(authService.changePassword(changePasswordVo));
     }
@@ -98,7 +98,7 @@ public class LoginController {
     @Operation(summary = "发送短信验证码")
     @SaIgnore
     @PostMapping("/{account}/{type}")
-    @RedisRateLimitConfig(key = "login:send:code", replenishRate = 1, burstCapacity = 5)
+    @RedisRateLimitConfig(key = "login:send:code", burstCapacity = 5)
     public ResponseEntity<Boolean> sendSmsCode(@PathVariable String account, @PathVariable Integer type) {
         return ResponseEntity.ok(authService.sendCode(account, type));
     }

@@ -1,20 +1,22 @@
 package top.fanxfan.core.limit;
 
-import org.redisson.api.RedissonClient;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import top.fanxfan.core.limit.apo.RedisRateLimitAspect;
 
 /**
  * 限流配置
  *
  * @author fanxfan
  */
-@Configuration
+@Slf4j
+@AutoConfiguration
+@EnableConfigurationProperties({RedisLimitProperties.class})
 public class RedisLimitConfigure {
 
     /**
@@ -22,6 +24,7 @@ public class RedisLimitConfigure {
      */
     @Bean(name = "limitRedisTemplate")
     public RedisTemplate<String, Object> createLimitRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        log.info("创建限流redisTemplate");
         RedisTemplate<String, Object> redisLimitTemplate = new RedisTemplate<>();
         // 配置连接工厂
         redisLimitTemplate.setConnectionFactory(redisConnectionFactory);
@@ -35,18 +38,8 @@ public class RedisLimitConfigure {
         redisLimitTemplate.setHashKeySerializer(new StringRedisSerializer());
         // hash value序列化
         redisLimitTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        //
+        // 重新设置数据
         redisLimitTemplate.afterPropertiesSet();
         return redisLimitTemplate;
-    }
-
-    @Bean
-    public RedisRateLimiter redisRateLimiter(RedissonClient redissonClient) {
-        return new RedisRateLimiter(redissonClient);
-    }
-
-    @Bean
-    public RedisRateLimitAspect redisRateLimitAspect(RedisRateLimiter redisRateLimiter) {
-        return new RedisRateLimitAspect(redisRateLimiter);
     }
 }

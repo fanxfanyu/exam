@@ -1,2 +1,3 @@
 top.fanxfan.core.secret.SecretConfiguration
 top.fanxfan.core.captcha.CaptchaConfiguration
+top.fanxfan.core.limit.RedisLimitConfigure

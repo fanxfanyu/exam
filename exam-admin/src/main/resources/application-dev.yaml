@@ -72,3 +72,12 @@ sa-token:
 logging:
   level:
     top.fanxfan: debug
+
+redis:
+  limit:
+    key: default
+    burst-capacity: 50
+    timeout: 120
+    rate-interval: seconds
+    limit-type: ip
+    rate-type: overall

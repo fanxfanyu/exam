@@ -7,11 +7,25 @@ package top.fanxfan.base.constants;
  */
 @SuppressWarnings("all")
 public interface BaseErrorConstants {
+    /**
+     * 无效登录方式
+     */
+    String INVALID_LOGIN_TYPE = "无效登录方式";
+
+    /**
+     * 登录失败
+     */
+    String LOGIN_ERROR = "登录失败";
 
     /**
      * 密码不正确
      */
     String USERNAME_PASSWORD_NOT_MATCH_MESSAGE = "用户名或密码不正确";
+
+    /**
+     * 该账号已被禁用
+     */
+    String USER_DISABLE = "该账号已被禁用";
 
     /**
      * 用户不存在

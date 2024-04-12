@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import top.fanxfan.core.exception.ServiceException;
 import top.fanxfan.core.tools.PageUtils;
 import top.fanxfan.exam.entity.QQuestion;
 import top.fanxfan.exam.entity.Question;
@@ -79,7 +80,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public Boolean remove(Long id) {
-        Question question = questionRepository.findById(id).orElseThrow(() -> new RuntimeException(QUESTION_NOT_FOUND));
+        Question question = questionRepository.findById(id).orElseThrow(() -> new ServiceException(QUESTION_NOT_FOUND));
         questionRepository.delete(question);
         return true;
     }
@@ -87,7 +88,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public Boolean update(QuestionVo questionVo) {
-        Question question = questionRepository.findById(questionVo.getId()).orElseThrow(() -> new RuntimeException(QUESTION_NOT_FOUND));
+        Question question = questionRepository.findById(questionVo.getId()).orElseThrow(() -> new ServiceException(QUESTION_NOT_FOUND));
         BeanUtil.copyProperties(questionVo, question, "options");
         questionOptionRepository.deleteAll(question.getOptions());
         dealOption(questionVo, question);
@@ -96,7 +97,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question get(Long id) {
-        return questionRepository.findById(id).orElseThrow(() -> new RuntimeException(QUESTION_NOT_FOUND));
+        return questionRepository.findById(id).orElseThrow(() -> new ServiceException(QUESTION_NOT_FOUND));
     }
 
     /**
