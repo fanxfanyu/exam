@@ -1,0 +1,31 @@
+version: "3.8"
+name: exam-server
+
+services:
+  redis:
+    image: redis:5.0
+    ports:
+      - "6379:6379"
+    command: [ "redis-server","--requirepass","fanxfan" ]
+#  postgres:
+#    image: postgres:latest
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_PASSWORD: fanxfan
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: fanxfan
+      MYSQL_DATABASE: exam
+    volumes:
+      - D://workSpace/exam/sql/:/docker-entrypoint-initdb.d/
+volumes:
+  redis:
+    driver:
+      local-redis
+  postgres:
+    driver:
+      local-postgres
