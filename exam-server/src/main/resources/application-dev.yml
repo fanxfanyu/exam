@@ -9,7 +9,7 @@ spring:
     # password: fanxfan
     # mysql
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/exam??createDatabaseIfNotExist=true
+    url: jdbc:mysql://127.0.0.1:3306/exam?createDatabaseIfNotExist=true&useSSL=false
     username: root
     password: fanxfan
     druid:
