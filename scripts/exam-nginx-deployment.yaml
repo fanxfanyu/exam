@@ -19,7 +19,12 @@ spec:
       containers:
         - name: nginx
           image: nginx
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+              protocol: TCP
           resources:
             limits:
-              cpu: "2"
-              memory: "1G"
+              cpu: "1"
+              memory: "500M"

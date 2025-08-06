@@ -1,6 +1,19 @@
 spring:
   application:
     name: exam
+  docker:
+    compose:
+      enabled: true
+      file: docker-compose.yaml
+      profiles:
+        active: ${spring.profiles.active}
+      lifecycle-management: start_and_stop
+      start:
+        log-level: error
+        command: up
+      stop:
+        command: stop
+        timeout: 0
   profiles:
     active: dev
   jackson:
@@ -23,9 +36,6 @@ debug: false
 # server配置
 server:
   tomcat:
-    threads:
-      max: 600
-      min-spare: 50
     access-log:
       enabled: true
       directory: logs

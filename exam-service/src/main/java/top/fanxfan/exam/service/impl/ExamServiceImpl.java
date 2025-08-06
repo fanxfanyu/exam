@@ -2,6 +2,7 @@ package top.fanxfan.exam.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,8 @@ public class ExamServiceImpl implements ExamService {
     private final ExamQuestionRepository examQuestionRepository;
 
     private final UserExamRepository userExamRepository;
+
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Page<Exam> list(ExamSearch examSearch) {
@@ -176,9 +179,9 @@ public class ExamServiceImpl implements ExamService {
             // 转换为examQuestion对象
             Stream<ExamQuestion> examQuestionStream = byType.stream()
                     .filter(Objects::nonNull)
-                    .map(question -> ExamQuestion.builder()
+                    .map(questionObj -> ExamQuestion.builder()
                             .exam(exam)
-                            .question(question)
+                            .question(questionObj)
                             .score(itemScore)
                             .build());
             questionStreamList = examQuestionStream.toList();

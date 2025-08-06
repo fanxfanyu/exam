@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import com.querydsl.core.BooleanBuilder;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +41,6 @@ public class UserServiceImpl implements UserService {
     private static final String DEFAULT_PASSWORD = "password";
 
     private final UserRepository userRepository;
-
-    private final EntityManager entityManager;
 
     @Override
     public Page<User> list(UserSearchVo userSearchVo) {

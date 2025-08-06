@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import top.fanxfan.base.enums.UserTypeEnum;
 import top.fanxfan.core.enums.StatusEnum;
 
@@ -14,6 +15,7 @@ import top.fanxfan.core.enums.StatusEnum;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "用户信息VO", name = "UserVo")
 public class UserVo {
 

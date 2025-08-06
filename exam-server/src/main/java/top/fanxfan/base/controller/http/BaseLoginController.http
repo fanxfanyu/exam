@@ -7,7 +7,7 @@ POST http://127.0.0.1:8081/auth
 Content-Type: application/json
 
 {
-  "account": "super",
+  "account": "fanxfan",
   "password": "fanxfan",
   "type": 0,
   "captcha": "",

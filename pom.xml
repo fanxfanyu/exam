@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
     <groupId>top.fanxfan</groupId>
     <artifactId>exam</artifactId>
     <version>1.0.0</version>
@@ -19,7 +13,6 @@
         <module>exam-entity-jpa</module>
         <module>exam-config</module>
         <module>exam-service</module>
-        <module>exam-admin</module>
     </modules>
     <properties>
         <java.version>17</java.version>
@@ -32,16 +25,23 @@
         <springdoc.openapi.webmvc.version>2.3.0</springdoc.openapi.webmvc.version>
         <hutool.version>5.8.25</hutool.version>
         <sa-token.version>1.37.0</sa-token.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
+
+    <profiles>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
+                <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
+                <scope>import</scope>
             </dependency>
+
+
             <dependency>
                 <groupId>top.fanxfan</groupId>
                 <artifactId>exam-config</artifactId>
@@ -78,7 +78,6 @@
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-apt</artifactId>
@@ -87,14 +86,12 @@
                 <scope>provided</scope>
                 <optional>true</optional>
             </dependency>
-
             <dependency>
                 <groupId>com.querydsl</groupId>
                 <artifactId>querydsl-jpa</artifactId>
                 <classifier>jakarta</classifier>
                 <version>${querydsl.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
@@ -135,6 +132,18 @@
                 <artifactId>sa-token-alone-redis</artifactId>
                 <version>${sa-token.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dromara.dynamictp</groupId>
+                <artifactId>dynamic-tp-spring-boot-starter-common</artifactId>
+                <version>1.1.7-3.x</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -144,6 +153,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -195,5 +209,64 @@
             <artifactId>jakarta.jakartaee-api</artifactId>
             <version>11.0.0-M1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docker-compose</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-alone-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dromara.dynamictp</groupId>
+            <artifactId>dynamic-tp-spring-boot-starter-common</artifactId>
+        </dependency>
     </dependencies>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 关闭过滤 -->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 引入所有 匹配文件进行过滤 -->
+                <includes>
+                    <include>application*</include>
+                    <include>bootstrap*</include>
+                    <include>logback*</include>
+                    <include>docker-compose.yaml</include>
+                </includes>
+                <!-- 启用过滤 即该资源中的变量将会被过滤器中的值替换 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>
